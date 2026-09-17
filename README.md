@@ -3,3 +3,6 @@
 
 | [onboarding screen displays]
 (https://github.com/lady-igth/Junior-IS/issues/2)
+
+| [Skin Scan Screen]
+(https://github.com/lady-igth/Junior-IS/issues/3)
