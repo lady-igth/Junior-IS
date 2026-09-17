@@ -19,3 +19,6 @@
 
 | [Pre-trained image classification mode]
 (https://github.com/lady-igth/Junior-IS/issues/7)
+
+| [Fine-tuned classifier]
+(https://github.com/lady-igth/Junior-IS/issues/8)
