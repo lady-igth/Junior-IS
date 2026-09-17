@@ -17,4 +17,5 @@
 (https://github.com/lady-igth/Junior-IS/issues/6)
 
 
-
+| [Pre-trained image classification mode]
+(https://github.com/lady-igth/Junior-IS/issues/7)
