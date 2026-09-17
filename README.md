@@ -13,3 +13,8 @@
 | [select a photo from their device’s photo library]
 (https://github.com/lady-igth/Junior-IS/issues/5)
 
+| [Photo Capture]
+(https://github.com/lady-igth/Junior-IS/issues/6)
+
+
+
