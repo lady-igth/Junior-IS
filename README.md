@@ -9,3 +9,7 @@
 
 | [Click Button]
 (https://github.com/lady-igth/Junior-IS/issues/4)
+
+| [select a photo from their device’s photo library]
+(https://github.com/lady-igth/Junior-IS/issues/5)
+
