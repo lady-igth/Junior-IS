@@ -6,3 +6,6 @@
 
 | [Skin Scan Screen]
 (https://github.com/lady-igth/Junior-IS/issues/3)
+
+| [Click Button]
+(https://github.com/lady-igth/Junior-IS/issues/4)
