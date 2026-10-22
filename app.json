@@ -1,0 +1,36 @@
+{
+  "expo": {
+    "name": "The Skincare Guide",
+    "slug": "skincare-guide",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "newArchEnabled": true,
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "edu.wooster.skincareguide",
+      "infoPlist": {
+        "NSCameraUsageDescription": "The Skincare Guide uses the camera to take a photo of your skin for analysis. The photo is analyzed on your phone and never saved or uploaded.",
+        "NSPhotoLibraryUsageDescription": "The Skincare Guide lets you choose a skin photo for analysis. The photo is analyzed on your phone and never saved or uploaded."
+      }
+    },
+    "android": {
+      "package": "edu.wooster.skincareguide",
+      "permissions": [
+        "CAMERA",
+        "POST_NOTIFICATIONS"
+      ]
+    },
+    "plugins": [
+      [
+        "expo-image-picker",
+        {
+          "cameraPermission": "The Skincare Guide uses the camera to take a photo of your skin for analysis. The photo is analyzed on your phone and never saved or uploaded.",
+          "photosPermission": "The Skincare Guide lets you choose a skin photo for analysis. The photo is analyzed on your phone and never saved or uploaded."
+        }
+      ],
+      "react-native-fast-tflite",
+      "expo-status-bar"
+    ]
+  }
+}
