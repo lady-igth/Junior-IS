@@ -1,5 +1,4 @@
-// App-wide state, saved on the phone only (AsyncStorage).
-// Photos are never stored — only scan results.
+
 import React, { createContext, useContext, useEffect, useMemo, useState, useCallback } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getProduct } from '../data/products';
