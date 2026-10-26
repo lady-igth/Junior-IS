@@ -1,6 +1,4 @@
-// Turns a photo into the exact input the model was trained on,
-// mirroring the Colab test cell:
-//   exif_transpose -> center square crop (x cropFraction) -> resize 224x224 -> x/127.5 - 1
+
 import { manipulateAsync, SaveFormat } from 'expo-image-manipulator';
 import jpeg from 'jpeg-js';
 import { toByteArray } from 'base64-js';
