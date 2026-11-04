@@ -61,12 +61,7 @@ I trained four photo models for skin type (dry / normal / oily). After I removed
 ### Remaining
 | Task | Target |
 |---|---|
-| Native build so the real model runs on the iPhone | Oct 29 |
+| Progress photo comparison over time (opt-in, stored only on the phone) | Nov 8 |
 | Test the Skin Quiz accuracy against labelled skin types | Nov 12 |
-| Fairness test: acne model accuracy across skin tones | Nov 19 |
-| Skin type photo model v5 with more diverse data | Dec 3 |
-| Progress photo comparison over time | Dec 10 |
-
-See all tasks on the [Issues page](https://github.com/lady-igth/Junior-IS/issues).
-
-*General skincare information, not medical advice.*
+| Fairness test: acne model accuracy across skin tones | Nov 15 |
+| Skin type photo model v5 with more diverse data | Nov 19 |
