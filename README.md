@@ -64,4 +64,4 @@ I trained four photo models for skin type (dry / normal / oily). After I removed
 | Progress photo comparison over time (opt-in, stored only on the phone) | Nov 8 |
 | Test the Skin Quiz accuracy against labelled skin types | Nov 12 |
 | Fairness test: acne model accuracy across skin tones | Nov 15 |
-| Skin type photo model v5 with more diverse data | Nov 19 |
+| Skin type photo model v5 with more diverse data | Nov 15 |
