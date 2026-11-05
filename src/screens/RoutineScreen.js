@@ -1,3 +1,5 @@
+// My Routine screen: saved products as a morning and a night routine,
+// ordered by step, plus the daily AM/PM reminder switches.
 import React from 'react';
 import { ScrollView, View, Text, StyleSheet, Pressable, Switch, Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
@@ -7,15 +9,18 @@ import { ensurePermission, scheduleDaily, cancel } from '../notifications';
 import { Button, Card, Screen } from '../components/UI';
 import { colors, space, type, radius } from '../theme';
 
+// 8 -> "8:00 AM", 21 -> "9:00 PM"
 const fmtHour = (h) => `${h % 12 === 0 ? 12 : h % 12}:00 ${h < 12 ? 'AM' : 'PM'}`;
 
+// One reminder row: an on/off switch and -/+ buttons to change the hour.
 function Reminder({ slot }) {
   const { reminders, setReminder } = useApp();
   const r = reminders[slot];
-  const [minH, maxH] = slot === 'AM' ? [5, 11] : [17, 23];
+  const [minH, maxH] = slot === 'AM' ? [5, 11] : [17, 23]; // AM: 5-11, PM: 5-11 at night
 
+  // Turn the reminder on or off (or move it to a new hour)
   const apply = async (on, hour) => {
-    await cancel(r.id);
+    await cancel(r.id); // remove the old reminder first
     if (!on) return setReminder(slot, { on: false, id: null, hour });
     const ok = await ensurePermission();
     if (!ok) {
@@ -26,6 +31,7 @@ function Reminder({ slot }) {
     setReminder(slot, { on: true, id, hour });
   };
 
+  // Move the reminder one hour earlier (-1) or later (+1), within the allowed range
   const shift = (d) => {
     const h = Math.min(maxH, Math.max(minH, r.hour + d));
     if (h !== r.hour) apply(r.on, h);
@@ -51,6 +57,7 @@ function Reminder({ slot }) {
   );
 }
 
+// One numbered step in a routine, with a button to remove it.
 function Step({ product, index, onRemove }) {
   return (
     <View style={styles.step}>
@@ -73,6 +80,8 @@ function Step({ product, index, onRemove }) {
 export default function RoutineScreen({ navigation }) {
   const { routine, removeFromRoutine } = useApp();
 
+  // The saved products for one slot (AM or PM), in routine order:
+  // cleanser, toner, treatment, spot care, moisturizer, sunscreen
   const forSlot = (slot) =>
     routine
       .filter((r) => r.slot === slot)
@@ -96,6 +105,7 @@ export default function RoutineScreen({ navigation }) {
     );
   }
 
+  // One routine card (Morning or Night)
   const section = (slot, list) => (
     <Card>
       <View style={{ flexDirection: 'row', alignItems: 'center', gap: space.sm, marginBottom: space.sm }}>
