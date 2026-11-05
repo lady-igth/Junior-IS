@@ -1,3 +1,5 @@
+// Profile screen: shows the latest skin profile (acne level + skin type)
+// with confidence bars, the trend since the last scan, and scan history.
 import React from 'react';
 import { ScrollView, View, Text, StyleSheet, Pressable, Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
@@ -11,6 +13,15 @@ const severity = (scan) => (scan.concern.probs.mild || 0) + 2 * (scan.concern.pr
 
 const fmtDate = (iso) =>
   new Date(iso).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
+
+// Compare the latest scan with the one before it.
+function trendText(latest, prev) {
+  if (!prev) return null;
+  const diff = severity(latest) - severity(prev);
+  if (diff < -0.15) return 'Improving since your last scan';
+  if (diff > 0.15) return 'More breakouts than your last scan';
+  return 'About the same as your last scan';
+}
 
 const SUMMARY = {
   clear: 'Your skin looks clear. Focus on a simple routine: gentle cleanser, moisturizer and daily sunscreen.',
@@ -39,13 +50,7 @@ export default function ProfileScreen({ navigation }) {
   }
 
   const level = latest.concern.label;
-  const prev = scans[1];
-  let trend = null;
-  if (prev) {
-    const diff = severity(latest) - severity(prev);
-    trend =
-      diff < -0.15 ? 'Improving since your last scan' : diff > 0.15 ? 'More breakouts than your last scan' : 'About the same as your last scan';
-  }
+  const trend = trendText(latest, scans[1]);
 
   const confirmDelete = (id) =>
     Alert.alert('Delete this scan?', 'This removes the result from your history.', [
@@ -108,11 +113,7 @@ export default function ProfileScreen({ navigation }) {
           {latest.skinType.probs ? (
             <>
               <Text style={[type.small, { marginTop: 4 }]}>
-                {latest.skinType.source === 'quiz'
-                  ? 'Based on your Skin Quiz answers.'
-                  : latest.skinType.source === 'combined'
-                  ? 'Combines your photo with your Skin Quiz.'
-                  : 'From your photo.'}
+                Based on your Skin Quiz answers.
               </Text>
               {Object.keys(latest.skinType.probs).map((l) => (
                 <ConfidenceBar
