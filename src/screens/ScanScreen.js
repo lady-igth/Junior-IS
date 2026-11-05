@@ -1,3 +1,5 @@
+// Skin Scan screen: take or choose a face photo, then analyze it.
+// The photo is kept only in memory and cleared after the analysis.
 import React, { useState } from 'react';
 import { ScrollView, View, Text, Image, StyleSheet, Alert } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
@@ -7,9 +9,10 @@ import { analyzePhoto } from '../ml/classifier';
 import { Button, Card, Screen } from '../components/UI';
 import { colors, space, type, radius } from '../theme';
 
+// Tips shown under the photo so users take a consistent, well-lit photo
 const TIPS = [
   { icon: 'sunny-outline', text: 'Face a window — soft, even daylight works best.' },
-  { icon: 'scan-outline', text: 'Fill the square with the area you want checked (cheek, forehead, chin).' },
+  { icon: 'scan-outline', text: 'Center your face in the square.' },
   { icon: 'water-outline', text: 'Bare skin: no makeup or filters.' },
   { icon: 'hand-left-outline', text: 'Hold still so the photo is sharp.' },
 ];
@@ -17,8 +20,9 @@ const TIPS = [
 export default function ScanScreen({ navigation }) {
   const { profile, addScan } = useApp();
   const [photo, setPhoto] = useState(null); // kept in memory only
-  const [busy, setBusy] = useState(false);
+  const [busy, setBusy] = useState(false); // true while the AI is analyzing
 
+  // Take a photo (fromCamera = true) or choose one from the library (false)
   const pick = async (fromCamera) => {
     const perm = fromCamera
       ? await ImagePicker.requestCameraPermissionsAsync()
@@ -34,6 +38,7 @@ export default function ScanScreen({ navigation }) {
     if (!res.canceled && res.assets?.[0]) setPhoto(res.assets[0]);
   };
 
+  // Run the AI on the photo, save only the result, then open the Profile tab
   const analyze = async () => {
     if (!photo) return;
     setBusy(true);
