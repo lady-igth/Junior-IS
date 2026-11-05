@@ -1,3 +1,4 @@
+// Onboarding screen (first launch): asks for the user's name and the 6-question Skin Quiz.
 import React, { useState } from 'react';
 import { ScrollView, View, Text, TextInput, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -11,10 +12,15 @@ export default function OnboardingScreen() {
   const { profile, finishOnboarding } = useApp();
   const [name, setName] = useState(profile.name);
   const [answers, setAnswers] = useState(profile.quiz || {});
+
+  // Save one quiz answer, e.g. answer('afterWash', 'tight')
   const answer = (qid, key) => setAnswers((a) => ({ ...a, [qid]: key }));
+
+  // Live quiz result, updated every time an answer changes
   const result = scoreQuiz(answers);
   const answeredCount = QUESTIONS.filter((q) => answers[q.id]).length;
 
+  // "Get started": save the name and quiz results, then open the app
   const start = () =>
     finishOnboarding({
       name: name.trim(),
@@ -79,15 +85,12 @@ export default function OnboardingScreen() {
         <View style={styles.privacy}>
           <Ionicons name="lock-closed" size={18} color={colors.sage} />
           <Text style={[type.small, { flex: 1 }]}>
-            Your photos are analyzed on this phone and deleted right away. Nothing is uploaded. Only your results
+            Your photos are analyzed on this phone and not kept by the app. Nothing is uploaded. Only your results
             are saved, and only on this device.
           </Text>
         </View>
 
-        <Button
-          title="Get started"
-          onPress={start}
-        />
+        <Button title="Get started" onPress={start} />
         <Text style={[type.small, { textAlign: 'center', marginTop: space.md }]}>
           This app gives general skincare suggestions, not medical advice.
         </Text>
