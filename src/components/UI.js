@@ -1,15 +1,20 @@
+// Reusable building blocks used by every screen:
+// Screen, Card, Button, Chip, ConfidenceBar, LevelBadge and Notice.
 import React from 'react';
 import { View, Text, Pressable, StyleSheet, ActivityIndicator } from 'react-native';
 import { colors, space, radius, type, levelColor, cap } from '../theme';
 
+// The background of every screen
 export function Screen({ children, style }) {
   return <View style={[styles.screen, style]}>{children}</View>;
 }
 
+// A white rounded box that groups content
 export function Card({ children, style }) {
   return <View style={[styles.card, style]}>{children}</View>;
 }
 
+// A button: 'primary' (filled) or 'ghost' (light). Shows a spinner while loading.
 export function Button({ title, onPress, variant = 'primary', icon, loading, disabled, style }) {
   const primary = variant === 'primary';
   return (
@@ -36,6 +41,7 @@ export function Button({ title, onPress, variant = 'primary', icon, loading, dis
   );
 }
 
+// A small pill you can tap, used for quiz answers and category filters
 export function Chip({ label, active, onPress }) {
   return (
     <Pressable
@@ -49,8 +55,9 @@ export function Chip({ label, active, onPress }) {
   );
 }
 
+// A labeled bar showing a probability, e.g. "Mild 26%"
 export function ConfidenceBar({ label, value, color = colors.accent, highlight }) {
-  const pct = Math.round((value || 0) * 100);
+  const pct = Math.round((value || 0) * 100); // 0.26 -> 26
   return (
     <View style={{ marginVertical: space.xs + 2 }}>
       <View style={[styles.row, { justifyContent: 'space-between', marginBottom: 4 }]}>
@@ -64,6 +71,7 @@ export function ConfidenceBar({ label, value, color = colors.accent, highlight }
   );
 }
 
+// A colored label for an acne level: green clear, yellow mild, red moderate
 export function LevelBadge({ level }) {
   return (
     <View style={[styles.badge, { backgroundColor: levelColor[level] || colors.muted }]}>
@@ -72,6 +80,7 @@ export function LevelBadge({ level }) {
   );
 }
 
+// A soft colored message box: 'info' (green) or 'warn' (yellow)
 export function Notice({ children, tone = 'info' }) {
   const bg = tone === 'warn' ? colors.amberSoft : colors.sageSoft;
   return (
