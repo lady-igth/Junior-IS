@@ -1,11 +1,12 @@
-// App-wide state, saved on the phone only (AsyncStorage).
-// Photos are never stored — only scan results.
+// App memory: holds the profile, quiz answers, scan results, routine and reminders,
+// and saves them on the phone with AsyncStorage. Every screen reads it with useApp().
 import React, { createContext, useContext, useEffect, useMemo, useState, useCallback } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getProduct } from '../data/products';
 
-const KEY = 'skincare-guide/v1';
+const KEY = 'skincare-guide/v1'; // name of the saved data on the phone
 
+// What the app remembers when it is first installed
 const initial = {
   onboarded: false,
   profile: { name: '', selfSkinType: 'unsure', sensitive: false, quiz: {} }, // quiz: Skin Quiz answers
@@ -21,8 +22,9 @@ const Ctx = createContext(null);
 
 export function AppProvider({ children }) {
   const [state, setState] = useState(initial);
-  const [ready, setReady] = useState(false);
+  const [ready, setReady] = useState(false); // true once saved data has loaded
 
+  // 1) When the app opens, load the saved data from the phone
   useEffect(() => {
     (async () => {
       try {
@@ -35,18 +37,25 @@ export function AppProvider({ children }) {
     })();
   }, []);
 
+  // 2) Every time something changes, save it back to the phone
   useEffect(() => {
     if (ready) AsyncStorage.setItem(KEY, JSON.stringify(state)).catch(() => {});
   }, [state, ready]);
 
+  // Helper: change part of the state and keep the rest
   const update = useCallback((fn) => setState((s) => ({ ...s, ...fn(s) })), []);
 
+  // 3) Everything the screens can do to the saved data
   const actions = useMemo(
     () => ({
+      // Onboarding finished: save the profile and open the app
       finishOnboarding: (profile) => update(() => ({ profile, onboarded: true })),
+      // Go back to onboarding to retake the Skin Quiz
       editProfile: () => update(() => ({ onboarded: false })),
+      // Add a new scan result at the front (keep at most 60)
       addScan: (scan) => update((s) => ({ scans: [scan, ...s.scans].slice(0, 60) })),
       deleteScan: (id) => update((s) => ({ scans: s.scans.filter((x) => x.id !== id) })),
+      // Save a product to the AM and/or PM routine it belongs in (no duplicates)
       saveToRoutine: (productId) =>
         update((s) => {
           const p = getProduct(productId);
@@ -60,15 +69,16 @@ export function AppProvider({ children }) {
         update((s) => ({
           routine: s.routine.filter((r) => !(r.productId === productId && r.slot === slot)),
         })),
+      // Change one reminder's settings (on/off, hour, notification id)
       setReminder: (slot, patch) =>
         update((s) => ({ reminders: { ...s.reminders, [slot]: { ...s.reminders[slot], ...patch } } })),
-      resetAll: () => setState(initial),
     }),
     [update]
   );
 
+  // 4) What every screen receives from useApp()
   const value = useMemo(() => {
-    const latest = state.scans[0] || null;
+    const latest = state.scans[0] || null; // most recent scan
     const isSaved = (productId) => state.routine.some((r) => r.productId === productId);
     // Profile used by the matching algorithm
     const matchProfile = {
@@ -82,4 +92,5 @@ export function AppProvider({ children }) {
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;
 }
 
+// Screens call useApp() to read and change the saved data
 export const useApp = () => useContext(Ctx);
