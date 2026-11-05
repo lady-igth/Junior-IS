@@ -1,4 +1,6 @@
-import React, { useMemo, useState } from 'react';
+// Products screen: all products ranked by the matching algorithm,
+// with a search box and a filter for each category.
+import React, { useState } from 'react';
 import { FlatList, ScrollView, View, Text, TextInput, StyleSheet, Pressable } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useApp } from '../state/AppContext';
@@ -7,6 +9,15 @@ import { CATEGORIES } from '../data/products';
 import { Chip, Notice, Screen } from '../components/UI';
 import { colors, space, type, radius, cap } from '../theme';
 
+// The line above the list that says what the ranking is based on.
+function rankingNote(matchProfile, latest) {
+  const skin = `${cap(matchProfile.skinType)} skin`;
+  if (!latest) return `Ranked for ${skin}. Do a scan for better matches.`;
+  const sensitive = matchProfile.sensitive ? ', sensitive' : '';
+  return `Ranked for ${skin} with ${latest.concern.label} acne${sensitive}.`;
+}
+
+// One product in the list, with its reasons and a Save button.
 function ProductCard({ item, rank, saved, onSave }) {
   const { product: p, reasons } = item;
   return (
@@ -58,19 +69,13 @@ export default function ProductsScreen() {
   const [category, setCategory] = useState('All');
   const [query, setQuery] = useState('');
 
-  const results = useMemo(
-    () => recommend(matchProfile, { category, query }),
-    [matchProfile, category, query]
-  );
+  // Score and rank every product for this user (only 25, so this is instant).
+  const results = recommend(matchProfile, { category, query });
 
   const header = (
     <View>
       <Text style={[type.small, { marginBottom: space.md }]}>
-        {latest
-          ? `Ranked for ${cap(matchProfile.skinType)} skin with ${latest.concern.label} acne${
-              matchProfile.sensitive ? ', sensitive' : ''
-            }.`
-          : `Ranked for ${cap(matchProfile.skinType)} skin. Do a scan for better matches.`}
+        {rankingNote(matchProfile, latest)}
       </Text>
       <View style={styles.search}>
         <Ionicons name="search" size={18} color={colors.muted} />
