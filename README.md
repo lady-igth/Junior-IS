@@ -39,6 +39,44 @@ src/components/UI.js        Shared buttons, cards, confidence bars
 assets/models/              Trained TFLite model
 ```
 
+
+## Results
+
+The app builds each user's skin profile from two parts:
+
+| Part | What it gives | How |
+|---|---|---|
+| Skin Quiz (6 questions) | Skin type (dry, normal, oily, combination) and sensitivity | Each answer adds points to a skin type; points become confidence scores |
+| Acne model (MobileNetV2, on the phone) | Acne level (clear, mild, moderate) | Photo prediction (70%) combined with the quiz's breakout question (30%) |
+
+### Acne model (used in the app)
+
+Tested on held-out images that were not used in training:
+
+| Test accuracy | Macro F1 | Test images |
+|---|---|---|
+| 53.2% | 0.46 | 139 |
+
+Most errors are between neighboring levels, for example mild acne labeled as clear. The model almost never confuses clear skin with moderate acne. Combining the photo with the quiz's breakout answer helps correct this, because a user who reports frequent breakouts moves the estimate toward mild and moderate.
+
+### Skin-type photo models (not used in the app)
+
+Four MobileNetV2 versions were trained to classify skin type (dry, normal, oily) from a photo:
+
+| Version | Main change | Test accuracy | Macro F1 |
+|---|---|---|---|
+| v1 | Original dataset folders (with data leakage) | 45.5% | 0.46 |
+| v2 | Leakage removed | 42.9% | 0.29 |
+| v3 | Zoomed to the center of the face | 40.0% | 0.35 |
+| v4 | Two datasets, small skin patches | 35.4% | – |
+
+The skin-type dataset contained duplicate photos shared between its training and test folders, which inflated v1's score. After this leakage was removed, every version scored close to chance (about 33% for three classes), so the app gets skin type from the Skin Quiz instead.
+
+### Skin Quiz
+
+The quiz has not yet been tested against expert skin-type labels; this is listed under future work.
+
+
 ## Skin type: why the app uses a quiz
 
 I trained four photo models for skin type (dry / normal / oily). After I removed duplicate photos that were in both the training and test sets, every version scored close to the majority-class baseline (best: 40% test accuracy against a 34–43% baseline). So the photo model is off, and the app uses the Skin Quiz for skin type.
