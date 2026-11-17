@@ -58,10 +58,10 @@ I trained four photo models for skin type (dry / normal / oily). After I removed
 | Fine-tuned acne classifier | [#8](https://github.com/lady-igth/Junior-IS/issues/8) |
 | Skin Quiz, product matching, routine, reminders, progress history | — |
 
-### Remaining
-| Task | Target |
+### Future work
+| Feature | Why it was not included |
 |---|---|
-| Progress photo comparison over time (opt-in, stored only on the phone) | Nov 8 |
-| Test the Skin Quiz accuracy against labelled skin types | Nov 12 |
-| Fairness test: acne model accuracy across skin tones | Nov 15 |
-| Skin type photo model v5 with more diverse data | Nov 15 |
+| Progress photo comparison over time (opt-in, stored only on the phone) | Scoped out to finish on time; scan history already tracks results over time |
+| Test the Skin Quiz accuracy against labelled skin types | Needs a user study with reference skin-type labels |
+| Fairness test: acne model accuracy across skin tones | The datasets do not record skin tone |
+| Skin type photo model v5 with more diverse data | Needs a larger, dermatologist-labelled dataset with skin-tone variety |
