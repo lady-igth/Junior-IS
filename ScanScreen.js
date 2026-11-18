@@ -6,16 +6,8 @@ import * as ImagePicker from 'expo-image-picker';
 import { Ionicons } from '@expo/vector-icons';
 import { useApp } from '../state/AppContext';
 import { analyzePhoto } from '../ml/classifier';
-import { Button, Card, Screen } from '../components/UI';
+import { Button, Screen } from '../components/UI';
 import { colors, space, type, radius } from '../theme';
-
-// Tips shown under the photo so users take a consistent, well-lit photo
-const TIPS = [
-  { icon: 'sunny-outline', text: 'Face a window — soft, even daylight works best.' },
-  { icon: 'scan-outline', text: 'Center your face in the square.' },
-  { icon: 'water-outline', text: 'Bare skin: no makeup or filters.' },
-  { icon: 'hand-left-outline', text: 'Hold still so the photo is sharp.' },
-];
 
 export default function ScanScreen({ navigation }) {
   const { profile, addScan } = useApp();
@@ -61,9 +53,7 @@ export default function ScanScreen({ navigation }) {
         <Text style={type.h2}>
           {profile.name ? `Hi ${profile.name}, ready for a scan?` : 'Ready for a scan?'}
         </Text>
-        <Text style={[type.small, { marginTop: 4, marginBottom: space.lg }]}>
-          The AI checks your skin for acne level and builds your skin profile.
-        </Text>
+        <Text style={[type.small, { marginTop: 4, marginBottom: space.lg }]}>Take a clear photo of your face.</Text>
 
         <View style={styles.frame}>
           {photo ? (
@@ -97,20 +87,12 @@ export default function ScanScreen({ navigation }) {
           </View>
         )}
 
-        <Card style={{ marginTop: space.xl }}>
-          <Text style={[type.h3, { marginBottom: space.sm }]}>Tips for an accurate scan</Text>
-          {TIPS.map((t) => (
-            <View key={t.text} style={styles.tip}>
-              <Ionicons name={t.icon} size={18} color={colors.muted} />
-              <Text style={[type.body, { flex: 1 }]}>{t.text}</Text>
-            </View>
-          ))}
-        </Card>
-
-        <View style={styles.privacy}>
-          <Ionicons name="lock-closed" size={14} color={colors.sage} />
-          <Text style={type.small}>Analyzed on your phone. The photo is never saved or uploaded.</Text>
-        </View>
+        <Text style={[type.small, { textAlign: 'center', marginTop: space.xl }]}>
+          Daylight · bare skin · face centered · hold still
+        </Text>
+        <Text style={[type.small, { textAlign: 'center', marginTop: space.xs }]}>
+          Your photo stays on your phone.
+        </Text>
       </ScrollView>
     </Screen>
   );
@@ -126,6 +108,4 @@ const styles = StyleSheet.create({
   },
   photo: { width: '100%', height: '100%' },
   empty: { flex: 1, alignItems: 'center', justifyContent: 'center' },
-  tip: { flexDirection: 'row', gap: space.sm, alignItems: 'flex-start', marginVertical: 5 },
-  privacy: { flexDirection: 'row', gap: 6, alignItems: 'center', justifyContent: 'center', marginTop: space.sm },
 });

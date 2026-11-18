@@ -29,10 +29,10 @@ const ICONS = {
 };
 
 const TITLES = {
-  Scan: 'Skin Scan',
-  Profile: 'Skin Profile',
-  Products: 'Recommended Products',
-  Routine: 'My Routine',
+  Scan: 'Scan',
+  Profile: 'Profile',
+  Products: 'Products',
+  Routine: 'Routine',
 };
 
 function Tabs() {
@@ -40,7 +40,7 @@ function Tabs() {
     <Tab.Navigator
       screenOptions={({ route }) => ({
         title: TITLES[route.name],
-        tabBarLabel: route.name === 'Routine' ? 'My Routine' : route.name,
+        tabBarLabel: route.name,
         tabBarActiveTintColor: colors.accent,
         tabBarInactiveTintColor: colors.muted,
         headerStyle: { backgroundColor: colors.bg },

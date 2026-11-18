@@ -39,8 +39,7 @@ function Reminder({ slot }) {
 
   return (
     <View style={styles.reminder}>
-      <Ionicons name={slot === 'AM' ? 'sunny-outline' : 'moon-outline'} size={20} color={colors.accent} />
-      <Text style={[type.body, { flex: 1 }]}>{slot} reminder</Text>
+      <Text style={[type.body, { flex: 1 }]}>{slot === 'AM' ? 'Morning' : 'Night'}</Text>
       <Pressable onPress={() => shift(-1)} hitSlop={8} accessibilityLabel="Earlier">
         <Ionicons name="remove-circle-outline" size={22} color={colors.muted} />
       </Pressable>
@@ -61,9 +60,7 @@ function Reminder({ slot }) {
 function Step({ product, index, onRemove }) {
   return (
     <View style={styles.step}>
-      <View style={styles.stepNum}>
-        <Text style={styles.stepNumText}>{index + 1}</Text>
-      </View>
+      <Text style={styles.stepNumText}>{index + 1}</Text>
       <View style={{ flex: 1 }}>
         <Text style={type.small}>{product.category}</Text>
         <Text style={type.body}>
@@ -95,12 +92,12 @@ export default function RoutineScreen({ navigation }) {
   if (routine.length === 0) {
     return (
       <Screen style={{ alignItems: 'center', justifyContent: 'center', padding: space.xl }}>
-        <Ionicons name="list-outline" size={64} color={colors.accent} />
+        <Ionicons name="list-outline" size={56} color={colors.muted} />
         <Text style={[type.h2, { marginTop: space.md }]}>Your routine is empty</Text>
         <Text style={[type.body, { color: colors.muted, textAlign: 'center', marginVertical: space.md }]}>
-          Save products from your matches to build your morning and night routine.
+          Save products to build your routine.
         </Text>
-        <Button title="Browse my matches" onPress={() => navigation.navigate('Products')} />
+        <Button title="See my products" onPress={() => navigation.navigate('Products')} />
       </Screen>
     );
   }
@@ -108,21 +105,16 @@ export default function RoutineScreen({ navigation }) {
   // One routine card (Morning or Night)
   const section = (slot, list) => (
     <Card>
-      <View style={{ flexDirection: 'row', alignItems: 'center', gap: space.sm, marginBottom: space.sm }}>
-        <Ionicons name={slot === 'AM' ? 'sunny' : 'moon'} size={20} color={colors.accent} />
-        <Text style={type.h2}>{slot === 'AM' ? 'Morning' : 'Night'}</Text>
-      </View>
+      <Text style={[type.h2, { marginBottom: space.sm }]}>{slot === 'AM' ? 'Morning' : 'Night'}</Text>
       {list.length === 0 ? (
-        <Text style={type.small}>Nothing here yet.</Text>
+        <Text style={type.small}>No products yet.</Text>
       ) : (
         list.map((p, i) => (
           <Step key={p.id} product={p} index={i} onRemove={() => removeFromRoutine(p.id, slot)} />
         ))
       )}
       {slot === 'AM' && !list.some((p) => p.category === 'Sunscreen') && (
-        <Text style={[type.small, { marginTop: space.sm, color: colors.red }]}>
-          Tip: add a sunscreen — it's the most important morning step.
-        </Text>
+        <Text style={[type.small, { marginTop: space.sm }]}>Add a sunscreen.</Text>
       )}
     </Card>
   );
@@ -133,7 +125,7 @@ export default function RoutineScreen({ navigation }) {
         {section('AM', am)}
         {section('PM', pm)}
         <Card>
-          <Text style={[type.h3, { marginBottom: space.sm }]}>Daily reminders</Text>
+          <Text style={[type.h3, { marginBottom: space.sm }]}>Reminders</Text>
           <Reminder slot="AM" />
           <Reminder slot="PM" />
         </Card>
@@ -151,14 +143,6 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderTopColor: colors.border,
   },
-  stepNum: {
-    width: 28,
-    height: 28,
-    borderRadius: radius.pill,
-    backgroundColor: colors.bg,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  stepNumText: { color: colors.accent, fontWeight: '700' },
+  stepNumText: { width: 20, color: colors.muted, fontWeight: '600' },
   reminder: { flexDirection: 'row', alignItems: 'center', gap: space.sm, paddingVertical: space.sm },
 });

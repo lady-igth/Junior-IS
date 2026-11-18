@@ -32,12 +32,9 @@ export default function OnboardingScreen() {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.bg }}>
       <ScrollView contentContainerStyle={styles.wrap} keyboardShouldPersistTaps="handled">
-        <View style={styles.logo}>
-          <Ionicons name="sparkles" size={30} color="#fff" />
-        </View>
         <Text style={type.title}>The Skincare Guide</Text>
         <Text style={[type.body, { color: colors.muted, marginTop: space.sm, marginBottom: space.xl }]}>
-          Take a photo of your skin, get an AI skin profile, and build a routine with products matched to you.
+          A skin profile and routine made for you.
         </Text>
 
         <Card>
@@ -54,8 +51,7 @@ export default function OnboardingScreen() {
 
         <Text style={[type.h2, { marginTop: space.md }]}>Skin Quiz</Text>
         <Text style={[type.small, { marginBottom: space.md }]}>
-          {answeredCount}/{QUESTIONS.length} answered · Your answers work with the photo to make the analysis more
-          accurate. Skip any you're not sure about.
+          {answeredCount}/{QUESTIONS.length} answered · skip any you're unsure of
         </Text>
 
         {QUESTIONS.map((q, i) => (
@@ -75,24 +71,16 @@ export default function OnboardingScreen() {
 
         {result.skinType && (
           <Card>
-            <Text style={type.small}>Your quiz result so far</Text>
+            <Text style={type.small}>Your result</Text>
             <Text style={type.h3}>
               {cap(result.skinType.label)} skin{result.sensitive ? ' · sensitive' : ''}
             </Text>
           </Card>
         )}
 
-        <View style={styles.privacy}>
-          <Ionicons name="lock-closed" size={18} color={colors.sage} />
-          <Text style={[type.small, { flex: 1 }]}>
-            Your photos are analyzed on this phone and not kept by the app. Nothing is uploaded. Only your results
-            are saved, and only on this device.
-          </Text>
-        </View>
-
-        <Button title="Get started" onPress={start} />
+        <Button title="Get started" onPress={start} style={{ marginTop: space.md }} />
         <Text style={[type.small, { textAlign: 'center', marginTop: space.md }]}>
-          This app gives general skincare suggestions, not medical advice.
+          Photos stay on your phone. Not medical advice.
         </Text>
       </ScrollView>
     </SafeAreaView>
@@ -101,15 +89,6 @@ export default function OnboardingScreen() {
 
 const styles = StyleSheet.create({
   wrap: { padding: space.xl, paddingBottom: space.xxl * 2 },
-  logo: {
-    width: 56,
-    height: 56,
-    borderRadius: radius.md,
-    backgroundColor: colors.accent,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: space.lg,
-  },
   input: {
     marginTop: space.md,
     borderWidth: 1,
@@ -121,13 +100,4 @@ const styles = StyleSheet.create({
     backgroundColor: colors.bg,
   },
   wrapRow: { flexDirection: 'row', flexWrap: 'wrap' },
-  privacy: {
-    flexDirection: 'row',
-    gap: space.sm,
-    backgroundColor: colors.card,
-    padding: space.md,
-    borderRadius: radius.sm,
-    marginBottom: space.xl,
-    alignItems: 'flex-start',
-  },
 });
