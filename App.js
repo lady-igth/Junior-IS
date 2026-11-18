@@ -18,7 +18,7 @@ const Tab = createBottomTabNavigator();
 
 const navTheme = {
   ...DefaultTheme,
-  colors: { ...DefaultTheme.colors, background: colors.bg, primary: colors.accent, card: colors.card },
+  colors: { ...DefaultTheme.colors, background: colors.bg, primary: colors.accent, card: colors.bg },
 };
 
 const ICONS = {
