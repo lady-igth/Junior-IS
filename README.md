@@ -149,7 +149,8 @@ I trained four photo models for skin type (dry, normal, oily). Then I removed du
 | Photo capture | [#6](https://github.com/lady-igth/Junior-IS/issues/6) |
 | Pre-trained image classification model (MobileNetV2) | [#7](https://github.com/lady-igth/Junior-IS/issues/7) |
 | Fine-tuned acne classifier | [#8](https://github.com/lady-igth/Junior-IS/issues/8) |
-| Skin Quiz, product matching, routine, reminders, progress history | — |
+| Skin Quiz, product matching, routine, reminders, scan history | [#12](https://github.com/lady-igth/Junior-IS/issues/12) |
+| Bottom tab navigation | [#13](https://github.com/lady-igth/Junior-IS/issues/13) |
 
 ### Future work
 | Feature | Why it was not included |
